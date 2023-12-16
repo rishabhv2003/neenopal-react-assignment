@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './Box.css';
 import { Persons } from './../Data';
 // icons
-import { Mail, Phone, Globe, Trash, Heart, Edit3 } from 'react-feather';
-
+import Mail from '../svg/Mail';
+import Phone from '../svg/Phone';
+import Globe from '../svg/Globe';
+import Trash from '../svg/Trash';
+import Heart from '../svg/Heart';
+import Edit from '../svg/Edit';
 function Box() {
 	const [persons, setPersons] = useState([]);
 	const [id, setId] = useState(0);
@@ -48,15 +52,32 @@ function Box() {
 			website: person.website,
 		});
 	};
-
+	const [errName, setErrName] = useState(false);
+	const [errMail, setErrMail] = useState(false);
+	const [errPhone, setErrPhone] = useState(false);
+	const [errWebsite, setErrWebsite] = useState(false);
 	const handleEditInputChange = (field, value) => {
+		if (field == 'name' && value == 0) {
+			setErrName(true);
+		}
+		if (field == 'email' && value == 0) {
+			setErrMail(true);
+		}
+		if (field == 'telephone' && value == 0) {
+			setErrPhone(true);
+		}
+		if (field == 'website' && value == 0) {
+			setErrWebsite(true);
+		}
 		setEditedDetails((prevDetails) => ({
 			...prevDetails,
 			[field]: value,
 		}));
 	};
-
 	const handleSaveEdit = () => {
+		if (errName || errMail || errPhone || errWebsite) {
+			return;
+		}
 		const updatedPersons = persons.map((person) => {
 			if (person.id === id) {
 				return {
@@ -69,8 +90,11 @@ function Box() {
 			}
 			return person;
 		});
-
 		setPersons(updatedPersons);
+		setEditMenuOpen(false);
+	};
+
+	const handleCancelEdit = () => {
 		setEditMenuOpen(false);
 	};
 
@@ -79,74 +103,113 @@ function Box() {
 			{persons.map((person) => (
 				<div key={person.id} className="person-box">
 					<div className="upper-half">
-						<img src={person.image} alt={person.name} />
+						<img src={person.image} alt={"Avatar"} />
 					</div>
 					<div className="lower-half">
-						<h3>{person.name}</h3>
-						<p>
-							<Mail /> {person.email}
-						</p>
-						<p>
-							<Phone /> {person.telephone}
-						</p>
-						<p>
-							<Globe /> {person.website}
-						</p>
-						<div className="horizontal-tabs">
-							<button
-								className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
-								onClick={() => handleLikeClick(person.id)}
-							>
-								<Heart />
-							</button>
-							<button className="edit-button" onClick={() => handleEditClick(person)}>
-								<Edit3 />
-							</button>
-							<button className="delete-button" onClick={() => handleDeleteClick(person.id)}>
-								<Trash />
-							</button>
+						<h3 className='person-name'>{person.name}</h3>
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+							<i>
+								<Mail />
+							</i>
+							<p>
+								{person.email}
+							</p>
 						</div>
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+							<i><Phone /></i>
+							<p>
+								{person.telephone}
+							</p>
+						</div>
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+							<i><Globe /></i>
+							<p>
+								{person.website}
+							</p>
+						</div>
+
+					</div>
+					<div className='lower-buttons'>
+						<ul className="horizontal-tabs">
+							<li className='list-buttons'>
+								<button
+									className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
+									onClick={() => handleLikeClick(person.id)}
+								>
+									<Heart> </Heart>
+								</button>
+							</li>
+							<li className='list-buttons'>
+								<button className="edit-button" onClick={() => handleEditClick(person)}>
+									<Edit />
+								</button>
+							</li>
+							<li className='list-buttons'>
+								<button className="delete-button" onClick={() => handleDeleteClick(person.id)}>
+									<Trash />
+								</button>
+							</li>
+						</ul>
 					</div>
 				</div>
 			))}
-
 			{isEditMenuOpen && (
-				<div className="edit-menu">
-					<h3>Edit Person</h3>
-					<label>
-						Name:
-						<input
-							type="text"
-							value={editedDetails.name}
-							onChange={(e) => handleEditInputChange('name', e.target.value)}
-						/>
-					</label>
-					<label>
-						Email:
-						<input
-							type="text"
-							value={editedDetails.email}
-							onChange={(e) => handleEditInputChange('email', e.target.value)}
-						/>
-					</label>
-					<label>
-						Telephone:
-						<input
-							type="text"
-							value={editedDetails.telephone}
-							onChange={(e) => handleEditInputChange('telephone', e.target.value)}
-						/>
-					</label>
-					<label>
-						Website:
-						<input
-							type="text"
-							value={editedDetails.website}
-							onChange={(e) => handleEditInputChange('website', e.target.value)}
-						/>
-					</label>
-					<button onClick={handleSaveEdit}>Save</button>
-				</div>
+				<form >
+					<div className="edit-menu">
+						<div className='edit-menu-header'>
+							<h3>Basic Modal</h3>
+							<p onClick={handleCancelEdit} style={{ cursor: 'pointer', fontSize:'20px', color: '#555' }}>X</p>
+						</div>
+						<hr></hr>
+						<label>
+							<p>Name:</p>
+							<input
+								className={`${errName ? 'errName' : ''}`}
+								required
+								type="text"
+								value={editedDetails.name}
+								onChange={(e) => handleEditInputChange('name', e.target.value)}
+							/>
+							{errName && editedDetails.name.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+						</label>
+						<label>
+							<p> Email:</p>
+							<input
+								className={`${errMail ? 'errMail' : ''}`}
+								required
+								type="text"
+								value={editedDetails.email}
+								onChange={(e) => handleEditInputChange('email', e.target.value)}
+							/>
+							{errMail && editedDetails.email.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+						</label>
+						<label>
+							<p> Phone:</p>
+							<input
+								className={`${errMail ? 'errPhone' : ''}`}
+								required
+								type="text"
+								value={editedDetails.telephone}
+								onChange={(e) => handleEditInputChange('telephone', e.target.value)}
+							/>
+							{errPhone && editedDetails.telephone.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+						</label>
+						<label>
+							<p>Website:</p>
+							<input
+								className={`${errWebsite ? 'errWebsite' : ''}`}
+								required
+								type="text"
+								value={editedDetails.website}
+								onChange={(e) => handleEditInputChange('website', e.target.value)}
+							/>
+							{errWebsite && editedDetails.website.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+						</label>
+						<hr />
+						<button type='submit' className='btn-save' onClick={handleSaveEdit}>OK</button>
+						<button className='btn-cancel' onClick={handleCancelEdit}>Cancel</button>
+					</div>
+				</form>
 			)}
 		</div>
 	);
