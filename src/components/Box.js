@@ -6,10 +6,6 @@ import { Mail, Phone, Globe, Trash, Heart, Edit3 } from 'react-feather';
 
 function Box() {
 	const [persons, setPersons] = useState([]);
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [telephone, setTelephone] = useState('');
-	const [website, setWebsite] = useState('');
 	const [id, setId] = useState(0);
 
 	const [likedPersons, setLikedPersons] = useState([]);
@@ -86,7 +82,7 @@ function Box() {
 						<img src={person.image} alt={person.name} />
 					</div>
 					<div className="lower-half">
-						<h2>{person.name}</h2>
+						<h3>{person.name}</h3>
 						<p>
 							<Mail /> {person.email}
 						</p>
