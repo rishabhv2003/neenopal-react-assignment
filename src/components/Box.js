@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Box.css';
-import { useState } from 'react';
+import { Persons } from './../Data';
 // icons
 import { Mail, Phone, Globe, Trash, Heart, Edit3 } from 'react-feather';
 
-function Box(props) {
-	const { persons } = props;
-	// handling the likes
+function Box() {
+	const [persons, setPersons] = useState([]);
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [telephone, setTelephone] = useState('');
+	const [website, setWebsite] = useState('');
+	const [id, setId] = useState(0);
+
 	const [likedPersons, setLikedPersons] = useState([]);
+	const [isEditMenuOpen, setEditMenuOpen] = useState(false);
+	const [editedDetails, setEditedDetails] = useState({
+		name: '',
+		email: '',
+		telephone: '',
+		website: '',
+	});
+
+	useEffect(() => {
+		setPersons(Persons);
+	}, []);
+
 	const handleLikeClick = (personId) => {
 		setLikedPersons((prevLikedPersons) => {
 			if (prevLikedPersons.includes(personId)) {
@@ -17,14 +34,49 @@ function Box(props) {
 			}
 		});
 	};
-	const isPersonLiked = (personId) => likedPersons.includes(personId);
-	
-	// Edit button
-	
 
-	if (!persons || persons.length === 0) {
-		return <p>No persons to display</p>;
-	}
+	const isPersonLiked = (personId) => likedPersons.includes(personId);
+
+	const handleDeleteClick = (personId) => {
+		const updatedPersons = persons.filter((person) => person.id !== personId);
+		setPersons(updatedPersons);
+	};
+
+	const handleEditClick = (person) => {
+		setEditMenuOpen(true);
+		setId(person.id);
+		setEditedDetails({
+			name: person.name,
+			email: person.email,
+			telephone: person.telephone,
+			website: person.website,
+		});
+	};
+
+	const handleEditInputChange = (field, value) => {
+		setEditedDetails((prevDetails) => ({
+			...prevDetails,
+			[field]: value,
+		}));
+	};
+
+	const handleSaveEdit = () => {
+		const updatedPersons = persons.map((person) => {
+			if (person.id === id) {
+				return {
+					...person,
+					name: editedDetails.name,
+					email: editedDetails.email,
+					telephone: editedDetails.telephone,
+					website: editedDetails.website,
+				};
+			}
+			return person;
+		});
+
+		setPersons(updatedPersons);
+		setEditMenuOpen(false);
+	};
 
 	return (
 		<div className="box-container">
@@ -45,15 +97,61 @@ function Box(props) {
 							<Globe /> {person.website}
 						</p>
 						<div className="horizontal-tabs">
-							<button className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
-								onClick={() => handleLikeClick(person.id)} > <Heart />
+							<button
+								className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
+								onClick={() => handleLikeClick(person.id)}
+							>
+								<Heart />
 							</button>
-							<button className="edit-button"> <Edit3 /> </button>
-							<button className="delete-button"> <Trash /> </button>
+							<button className="edit-button" onClick={() => handleEditClick(person)}>
+								<Edit3 />
+							</button>
+							<button className="delete-button" onClick={() => handleDeleteClick(person.id)}>
+								<Trash />
+							</button>
 						</div>
 					</div>
 				</div>
 			))}
+
+			{isEditMenuOpen && (
+				<div className="edit-menu">
+					<h3>Edit Person</h3>
+					<label>
+						Name:
+						<input
+							type="text"
+							value={editedDetails.name}
+							onChange={(e) => handleEditInputChange('name', e.target.value)}
+						/>
+					</label>
+					<label>
+						Email:
+						<input
+							type="text"
+							value={editedDetails.email}
+							onChange={(e) => handleEditInputChange('email', e.target.value)}
+						/>
+					</label>
+					<label>
+						Telephone:
+						<input
+							type="text"
+							value={editedDetails.telephone}
+							onChange={(e) => handleEditInputChange('telephone', e.target.value)}
+						/>
+					</label>
+					<label>
+						Website:
+						<input
+							type="text"
+							value={editedDetails.website}
+							onChange={(e) => handleEditInputChange('website', e.target.value)}
+						/>
+					</label>
+					<button onClick={handleSaveEdit}>Save</button>
+				</div>
+			)}
 		</div>
 	);
 }

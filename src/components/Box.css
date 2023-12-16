@@ -29,3 +29,10 @@
     background-color: red;
     color: white;
 }
+
+/* styles for edit pane */
+.edit-menu {
+    height: 30vh;
+    width: 40vw;
+    background-color: aqua;
+}
