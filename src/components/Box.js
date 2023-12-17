@@ -74,8 +74,13 @@ function Box() {
 			[field]: value,
 		}));
 	};
-	const handleSaveEdit = () => {
+	const handleSaveEdit = (e) => {
+		e.preventDefault();
 		if (errName || errMail || errPhone || errWebsite) {
+			setErrName(false);
+			setErrMail(false);
+			setErrPhone(false);
+			setErrWebsite(false);
 			return;
 		}
 		const updatedPersons = persons.map((person) => {
@@ -158,7 +163,7 @@ function Box() {
 					<div className="edit-menu">
 						<div className='edit-menu-header'>
 							<h3>Basic Modal</h3>
-							<p onClick={handleCancelEdit} style={{ cursor: 'pointer', fontSize:'20px', color: '#555' }}>X</p>
+							<p onClick={handleCancelEdit} style={{ cursor: 'pointer', fontSize: '20px', color: '#555' }}>X</p>
 						</div>
 						<hr></hr>
 						<label>
