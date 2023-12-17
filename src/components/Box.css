@@ -93,7 +93,6 @@
 
 .like-button.liked {
     color: rgba(255, 0, 0);
-    background-color: url('../svg/HeartFilled.svg');
 }
 
 button {

@@ -7,12 +7,14 @@ import Phone from '../svg/Phone';
 import Globe from '../svg/Globe';
 import Trash from '../svg/Trash';
 import Heart from '../svg/Heart';
+import HeartFilled from '../svg/HeartFilled';
 import Edit from '../svg/Edit';
 function Box() {
 	const [persons, setPersons] = useState([]);
 	const [id, setId] = useState(0);
 
 	const [likedPersons, setLikedPersons] = useState([]);
+	const [btnLiked, setBtnLiked] = useState(false);
 	const [isEditMenuOpen, setEditMenuOpen] = useState(false);
 	const [editedDetails, setEditedDetails] = useState({
 		name: '',
@@ -141,7 +143,7 @@ function Box() {
 									className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
 									onClick={() => handleLikeClick(person.id)}
 								>
-									<Heart> </Heart>
+									{isPersonLiked(person.id) ? <HeartFilled /> : <Heart />}
 								</button>
 							</li>
 							<li className='list-buttons'>
