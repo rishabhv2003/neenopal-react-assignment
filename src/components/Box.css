@@ -87,7 +87,7 @@
 
 /* likes button */
 .like-button {
-    color: rgb(74, 74, 74);
+    color: rgb(255, 0, 0);
 }
 
 
@@ -118,19 +118,22 @@ button {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.edit-menu-header{
+.edit-menu-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     color: #333;
 }
+
 .edit-menu-header p {
     color: rgba(46, 46, 46, 0.45);
 }
+
 .edit-menu-header p:hover {
     color: #000000;
 }
+
 .edit-menu label {
     display: flex;
     flex-direction: row;
@@ -149,10 +152,12 @@ button {
     color: red;
     margin-right: 3px;
 }
+
 .err-msg {
     color: red;
     margin-left: 4px;
 }
+
 .edit-menu input {
     width: 60%;
     padding: 10px;
@@ -166,6 +171,7 @@ button {
 .edit-menu input:hover {
     border: 1px solid #3498db;
 }
+
 .edit-menu button {
     display: flex;
     float: right;
@@ -207,6 +213,7 @@ button {
     .box-container {
         grid-template-columns: 1fr 1fr 1fr;
     }
+
     .edit-menu {
         top: 35%;
         left: 50%;
@@ -231,6 +238,7 @@ button {
     .box-container {
         grid-template-columns: 1fr;
     }
+
     .edit-menu {
         width: 80vw;
     }
