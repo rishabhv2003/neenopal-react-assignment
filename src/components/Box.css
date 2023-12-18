@@ -59,11 +59,6 @@
     width: 100%;
 }
 
-.edit-button:hover,
-.delete-button:hover {
-    color: rgb(81, 194, 255);
-}
-
 .horizontal-tabs {
     display: flex;
     flex-direction: row;
@@ -89,10 +84,9 @@
 .like-button {
     color: rgb(255, 0, 0);
 }
-
-
-.like-button.liked {
-    color: rgba(255, 0, 0);
+.edit-button:hover,
+.delete-button:hover {
+    color: rgb(81, 194, 255);
 }
 
 button {

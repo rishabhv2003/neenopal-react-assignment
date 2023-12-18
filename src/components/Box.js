@@ -12,9 +12,7 @@ import Edit from '../svg/Edit';
 function Box() {
 	const [persons, setPersons] = useState([]);
 	const [id, setId] = useState(0);
-
 	const [likedPersons, setLikedPersons] = useState([]);
-	const [btnLiked, setBtnLiked] = useState(false);
 	const [isEditMenuOpen, setEditMenuOpen] = useState(false);
 	const [editedDetails, setEditedDetails] = useState({
 		name: '',
@@ -22,11 +20,16 @@ function Box() {
 		telephone: '',
 		website: '',
 	});
+	const [errName, setErrName] = useState(false);
+	const [errMail, setErrMail] = useState(false);
+	const [errPhone, setErrPhone] = useState(false);
+	const [errWebsite, setErrWebsite] = useState(false);
 
 	useEffect(() => {
 		setPersons(Persons);
 	}, []);
 
+	// start like button
 	const handleLikeClick = (personId) => {
 		setLikedPersons((prevLikedPersons) => {
 			if (prevLikedPersons.includes(personId)) {
@@ -36,14 +39,17 @@ function Box() {
 			}
 		});
 	};
-
 	const isPersonLiked = (personId) => likedPersons.includes(personId);
+	// end like button
 
+	// start delete button
 	const handleDeleteClick = (personId) => {
 		const updatedPersons = persons.filter((person) => person.id !== personId);
 		setPersons(updatedPersons);
 	};
+	// end delete button
 
+	// start edit button
 	const handleEditClick = (person) => {
 		setEditMenuOpen(true);
 		setId(person.id);
@@ -54,10 +60,6 @@ function Box() {
 			website: person.website,
 		});
 	};
-	const [errName, setErrName] = useState(false);
-	const [errMail, setErrMail] = useState(false);
-	const [errPhone, setErrPhone] = useState(false);
-	const [errWebsite, setErrWebsite] = useState(false);
 	const handleEditInputChange = (field, value) => {
 		if (field == 'name' && value == 0) {
 			setErrName(true);
@@ -76,6 +78,9 @@ function Box() {
 			[field]: value,
 		}));
 	};
+	// end edit button
+
+	// start save button
 	const handleSaveEdit = (e) => {
 		e.preventDefault();
 		if (errName || errMail || errPhone || errWebsite) {
@@ -100,11 +105,13 @@ function Box() {
 		setPersons(updatedPersons);
 		setEditMenuOpen(false);
 	};
+	// end edit button
 
+	// start cancel edit button
 	const handleCancelEdit = () => {
 		setEditMenuOpen(false);
 	};
-
+	// end cancel edit button
 	return (
 		<div className="box-container">
 			{persons.map((person) => (
@@ -140,7 +147,7 @@ function Box() {
 						<ul className="horizontal-tabs">
 							<li className='list-buttons'>
 								<button
-									className={`like-button ${isPersonLiked(person.id) ? 'liked' : ''}`}
+									className={`like-button`}
 									onClick={() => handleLikeClick(person.id)}
 								>
 									{isPersonLiked(person.id) ? <HeartFilled /> : <Heart />}
@@ -161,7 +168,7 @@ function Box() {
 				</div>
 			))}
 			{isEditMenuOpen && (
-				<form >
+				<form>
 					<div className="edit-menu">
 						<div className='edit-menu-header'>
 							<h3>Basic Modal</h3>
