@@ -60,6 +60,11 @@ function Box() {
 			website: person.website,
 		});
 	};
+	function isValid () {
+		if(editedDetails.email && editedDetails.name && editedDetails.telephone && editedDetails.website) {
+			return true;
+		} return false;
+	}
 	const handleEditInputChange = (field, value) => {
 		if (field == 'name' && value == 0) {
 			setErrName(true);
@@ -83,28 +88,27 @@ function Box() {
 	// start save button
 	const handleSaveEdit = (e) => {
 		e.preventDefault();
-		if (errName || errMail || errPhone || errWebsite) {
-			setErrName(false);
-			setErrMail(false);
-			setErrPhone(false);
-			setErrWebsite(false);
-			return;
+		if (isValid()) {
+			const updatedPersons = persons.map((person) => {
+				if (person.id === id) {
+					return {
+						...person,
+						name: editedDetails.name,
+						email: editedDetails.email,
+						telephone: editedDetails.telephone,
+						website: editedDetails.website,
+					};
+				}
+				return person;
+			});
+			setPersons(updatedPersons);
+			setEditMenuOpen(false);
+		} else {
+			// Handle the case where the form is not valid (e.g., show an error message).
+			console.log('Form is not valid. Please fill in all required fields.');
 		}
-		const updatedPersons = persons.map((person) => {
-			if (person.id === id) {
-				return {
-					...person,
-					name: editedDetails.name,
-					email: editedDetails.email,
-					telephone: editedDetails.telephone,
-					website: editedDetails.website,
-				};
-			}
-			return person;
-		});
-		setPersons(updatedPersons);
-		setEditMenuOpen(false);
 	};
+	
 	// end edit button
 
 	// start cancel edit button
