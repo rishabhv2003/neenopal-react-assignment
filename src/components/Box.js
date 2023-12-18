@@ -20,11 +20,6 @@ function Box() {
 		telephone: '',
 		website: '',
 	});
-	const [errName, setErrName] = useState(false);
-	const [errMail, setErrMail] = useState(false);
-	const [errPhone, setErrPhone] = useState(false);
-	const [errWebsite, setErrWebsite] = useState(false);
-
 	useEffect(() => {
 		setPersons(Persons);
 	}, []);
@@ -60,24 +55,8 @@ function Box() {
 			website: person.website,
 		});
 	};
-	function isValid () {
-		if(editedDetails.email && editedDetails.name && editedDetails.telephone && editedDetails.website) {
-			return true;
-		} return false;
-	}
+
 	const handleEditInputChange = (field, value) => {
-		if (field == 'name' && value == 0) {
-			setErrName(true);
-		}
-		if (field == 'email' && value == 0) {
-			setErrMail(true);
-		}
-		if (field == 'telephone' && value == 0) {
-			setErrPhone(true);
-		}
-		if (field == 'website' && value == 0) {
-			setErrWebsite(true);
-		}
 		setEditedDetails((prevDetails) => ({
 			...prevDetails,
 			[field]: value,
@@ -86,6 +65,11 @@ function Box() {
 	// end edit button
 
 	// start save button
+	function isValid() {
+		if (editedDetails.email && editedDetails.name && editedDetails.telephone && editedDetails.website) {
+			return true;
+		} return false;
+	}
 	const handleSaveEdit = (e) => {
 		e.preventDefault();
 		if (isValid()) {
@@ -103,12 +87,8 @@ function Box() {
 			});
 			setPersons(updatedPersons);
 			setEditMenuOpen(false);
-		} else {
-			// Handle the case where the form is not valid (e.g., show an error message).
-			console.log('Form is not valid. Please fill in all required fields.');
 		}
 	};
-	
 	// end edit button
 
 	// start cancel edit button
@@ -182,46 +162,39 @@ function Box() {
 						<label>
 							<p>Name:</p>
 							<input
-								className={`${errName ? 'errName' : ''}`}
-								required
+								style={{ width: '60%' }}
 								type="text"
 								value={editedDetails.name}
 								onChange={(e) => handleEditInputChange('name', e.target.value)}
 							/>
-							{errName && editedDetails.name.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+							{editedDetails.name.length <= 0 ? <span className='err-msg'>Required</span> : ''}
 						</label>
 						<label>
 							<p> Email:</p>
 							<input
-								className={`${errMail ? 'errMail' : ''}`}
-								required
 								type="text"
 								value={editedDetails.email}
 								onChange={(e) => handleEditInputChange('email', e.target.value)}
 							/>
-							{errMail && editedDetails.email.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+							{editedDetails.email.length <= 0 ? <span className='err-msg'>Required</span> : ''}
 						</label>
 						<label>
 							<p> Phone:</p>
 							<input
-								className={`${errMail ? 'errPhone' : ''}`}
-								required
 								type="text"
 								value={editedDetails.telephone}
 								onChange={(e) => handleEditInputChange('telephone', e.target.value)}
 							/>
-							{errPhone && editedDetails.telephone.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+							{editedDetails.telephone.length <= 0 ? <span className='err-msg'>Required</span> : ''}
 						</label>
 						<label>
 							<p>Website:</p>
 							<input
-								className={`${errWebsite ? 'errWebsite' : ''}`}
-								required
 								type="text"
 								value={editedDetails.website}
 								onChange={(e) => handleEditInputChange('website', e.target.value)}
 							/>
-							{errWebsite && editedDetails.website.length <= 0 ? <span className='err-msg'>Required</span> : ''}
+							{editedDetails.website.length <= 0 ? <span className='err-msg'>Required</span> : ''}
 						</label>
 						<hr />
 						<button type='submit' className='btn-save' onClick={handleSaveEdit}>OK</button>
