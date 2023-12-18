@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Box.css';
-import { Persons } from './../Data';
+import Persons  from './../Data';
 // icons
 import Mail from '../svg/Mail';
 import Phone from '../svg/Phone';
